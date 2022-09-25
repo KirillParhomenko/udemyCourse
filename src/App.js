@@ -23,11 +23,15 @@ function App() {
       date: new Date(2021, 5, 12),
     },
   ];
-  
+
+  const getNewExpense = (newExpense) => {
+    expenses.push({ id: "e" + (expenses.length + 1), ...newExpense });
+  };
+
   return (
     <div>
       <h2>Let's get started!</h2>
-      <NewExpense />
+      <NewExpense pushNewExpense={getNewExpense} />
       <Expenses items={expenses} />
     </div>
   );

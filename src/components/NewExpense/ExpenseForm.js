@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import "./ExpenseForm.css";
 
-const ExpenseForm = () => {
+const ExpenseForm = (props) => {
   const [expenseData, setExpenseData] = useState({
     title: "",
     amount: "",
@@ -23,21 +23,29 @@ const ExpenseForm = () => {
 
   const changeDateData = (event) => {
     setExpenseData((prevState) => {
-      return { ...prevState, date: new Date(event.target.value) };
+      return { ...prevState, date: event.target.value };
     });
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
-    console.log(expenseData)
+    props.newExpenseData(expenseData);
+    setExpenseData((prevState) => {
+      return { ...prevState, title: "", amount: "", date: "" };
+    });
   };
 
   return (
-    <form onSubmit={submitHandler}> 
+    <form onSubmit={submitHandler}>
       <div className="new-expense__controls">
         <div className="new-expense__control">
           <label>Title</label>
-          <input type="text" required onChange={changeTitleData} />
+          <input
+            type="text"
+            value={expenseData.title}
+            onChange={changeTitleData}
+            required
+          />
         </div>
         <div className="new-expense__control">
           <label>Amount</label>
@@ -45,8 +53,9 @@ const ExpenseForm = () => {
             type="number"
             min="0.01"
             step="0.01"
-            required
+            value={expenseData.amount}
             onChange={changeAmountData}
+            required
           />
         </div>
         <div className="new-expense__control">
@@ -55,8 +64,9 @@ const ExpenseForm = () => {
             type="date"
             min="2019-01-01"
             max="2022-12-31"
-            required
+            value={expenseData.date}
             onChange={changeDateData}
+            required
           />
         </div>
       </div>
